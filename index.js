@@ -11,8 +11,9 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.get('/', (req, res) => {
+app.get('/', (req, res) => { // simple search form
     res.send(tpl('Welcome',`
+	<h1>Screenshotter</h1>
 	<form action = "/search" method = "POST">
 	<input type = "text" name = "search" align = "justify"/><br><br>
 	<input type = "submit" value="Search" />
@@ -21,11 +22,13 @@ app.get('/', (req, res) => {
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<button onclick='swal( "Hint" ,  "Hacker: I know your address \\n Me: Bruh I know it too" )'>hint</button>`));
 });
+
 var screenshot = '';
 var url = '';
-app.post('/search', async (req,res) => {
+
+app.post('/search', async (req,res) => { 
 	url = req.body.search;
-	if (!/^https?:\/\//i.test(url)) {
+	if (!/^https?:\/\//i.test(url)) { // adds http:// if not
     	url = 'http://' + url;
 	}
 	const browser = await puppeteer.launch({
@@ -39,7 +42,7 @@ app.post('/search', async (req,res) => {
 	try {
 		await page.goto(url);
 		await page.waitForTimeout(1500);
-		screenshot = await page.screenshot({ encoding: 'base64' });
+		screenshot = await page.screenshot({ encoding: 'base64' }); // encode image in b64 to include in html
 		res.send(tpl('Result',`
 		<style>
 		img {
@@ -47,6 +50,7 @@ app.post('/search', async (req,res) => {
 			height: 100%;
 		}
 		</style>
+		<h1>Screenshotter</h1>
 		<form action = "/search" method = "POST">
 		<input type = "text" name = "search" align = "justify"/><br><br>
 		<input type = "submit" value="Search" />
@@ -54,8 +58,9 @@ app.post('/search', async (req,res) => {
 		<div style="height: 10px"></div>
 		<img src="data:image/png;base64, ${screenshot}" />
 		<div style="height: 150px"></div>`));
-	} catch(err) {
+	} catch(err) { // display err
 		res.send(tpl('Error',`
+		<h1>Screenshotter</h1>
 		<form action = "/search" method = "POST">
 		<input type = "text" name = "search" align = "justify"/><br><br>
 		<input type = "submit" value="Search" />
