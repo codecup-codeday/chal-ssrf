@@ -15,7 +15,7 @@ app.get('/', (req, res) => { // simple search form
     res.send(tpl('Welcome',`
 	<h1>Website Screenshotter</h1>
 	<form action = "/search" method = "POST">
-	<input placeholder = "https://codeday.org" type = "text" name = "search" align = "justify"/><br><br>
+	<input placeholder = "codeday.org" type = "text" name = "search" align = "justify"/><br><br>
 	<input type = "submit" value="Search" />
 	</form>
 	<div style="height: 10px"></div>
@@ -41,8 +41,8 @@ app.post('/search', async (req,res) => {
 		height:720,
 	});
 	try {
-		await page.goto(url, {waitUntil : ['load', 'domcontentloaded']});
-		await page.waitForTimeout(500);
+		await page.goto(url);
+		await page.waitForTimeout(1600);
 		screenshot = await page.screenshot({ encoding: 'base64' }); // encode image in b64 to include in html
 		res.send(tpl('Result',`
 		<style>
@@ -53,7 +53,7 @@ app.post('/search', async (req,res) => {
 		</style>
 		<h1>Website Screenshotter</h1>
 		<form action = "/search" method = "POST">
-		<input placeholder = "https://codeday.org" type = "text" name = "search" align = "justify"/><br><br>
+		<input placeholder = "codeday.org" type = "text" name = "search" align = "justify"/><br><br>
 		<input type = "submit" value="Search" />
 		</form>
 		<div style="height: 10px"></div>
@@ -63,7 +63,7 @@ app.post('/search', async (req,res) => {
 		res.send(tpl('Error',`
 		<h1>Website Screenshotter</h1>
 		<form action = "/search" method = "POST">
-		<input placeholder = "https://codeday.org" type = "text" name = "search" align = "justify"/><br><br>
+		<input placeholder = "codeday.org" type = "text" name = "search" align = "justify"/><br><br>
 		<input type = "submit" value="Search" />
 		</form>
 		<div style="height: 10px"></div>
