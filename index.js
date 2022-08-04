@@ -26,16 +26,21 @@ app.get('/', (req, res) => { // simple search form
 
 var screenshot = '';
 var url = '';
+let globalBrowser = false;
 
 app.post('/search', async (req,res) => { 
 	url = req.body.search;
 	if (!/^https?:\/\//i.test(url)) { // adds http:// if not
     	url = 'http://' + url;
 	}
-	const browser = await puppeteer.launch({
-		args: ["--no-sandbox"]
-	});
-	const page = await browser.newPage();
+
+	if (!globalBrowser) {
+		globalBrowser = await puppeteer.launch({
+			args: ["--no-sandbox"]
+		});
+	}
+	
+	const page = await globalBrowser.newPage();
 	await page.setViewport({
 		width:1280,
 		height:720,
@@ -70,7 +75,7 @@ app.post('/search', async (req,res) => {
 		${err}
 		<div style="height: 150px"></div>`));
 	}
-	
+	page.close();
 });
 
 app.listen(port, () => console.log(`Listening on http://0.0.0.0:${port}/`));
