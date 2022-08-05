@@ -1,12 +1,15 @@
 {
   "name": "chal-ssrf",
   "version": "1.0.0",
+  "description": "simple ssrf chal",
   "main": "index.js",
+  "repository": "https://github.com/codecup-codeday/chal-ssrf",
+  "author": "Jeffrey Li (JelBell1324)",
   "license": "MIT",
   "dependencies": {
     "@srnd/codecup-genericwebsite": "^1.0.1",
     "body-parser": "^1.20.0",
     "express": "^4.18.1",
-    "puppeteer": "13.5.0"
+    "puppeteer": "^16.0.0"
   }
 }
